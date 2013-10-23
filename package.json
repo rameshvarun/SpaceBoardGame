@@ -9,7 +9,10 @@
     "express": "*",
     "swig": "*",
 	"passport": "*",
-	"socket.io": "*"
+	"passport-facebook": "*",
+	"passport-local": "*",
+	"socket.io": "*",
+	"mongoose" : "*"
   },
   "engines": {
 	"node": "0.10.x",
