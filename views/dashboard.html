@@ -1,0 +1,28 @@
+<html>
+
+<head>
+<title>Space Board Game - Dashboard</title>
+</head>
+
+<body>
+
+Welcome, {{ user.display_name }}!<br>
+<img src="{{ user.avatar }}" /><br>
+
+<a href="/logout">Logout</a><br>
+
+<h2>Invites</h2>
+
+<h2>Games</h2>
+<h3>Your Turn:</h3>
+<h3>Not Your Turn:</h3>
+
+<h2>Friends</h2>
+{% for friend in user.friends %}
+<img src="{{ friend.avatar }}" />
+<a href="/profile?id={{ friend.id }}">{{ friend.display_name }}</a>
+{% endfor %}
+
+</body>
+
+</html>

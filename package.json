@@ -6,13 +6,15 @@
     "start": "node app.js"
   },
   "dependencies": {
+	"async": "*",
     "express": "*",
     "swig": "*",
 	"passport": "*",
 	"passport-facebook": "*",
 	"passport-local": "*",
 	"socket.io": "*",
-	"mongoose" : "*"
+	"mongoose" : "*",
+	"request" : "*"
   },
   "engines": {
 	"node": "0.10.x",
