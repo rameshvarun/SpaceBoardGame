@@ -12,7 +12,6 @@
 	body {
 		margin:0;
 	}
-
 	canvas {
 		width: 100%; height: 100%
 	}
@@ -22,7 +21,6 @@
 </head>
 
 <body>
-
 
 </body>
 
@@ -55,10 +53,15 @@ function onWindowResize() {
 window.addEventListener( 'resize', onWindowResize, false );
 
 //Tokens used to communicate information from the server
-var GAMEID = {{GAMEID}};
+var GAMEID = "{{GAMEID}}";
+var USERTOKEN = "";
 
 //Connect to the server
 var socket = io.connect('{{APP_URL}}');
+
+socket.on('chatmessage', function (data) {
+    console.log(data.message);
+});
 
 </script>
 

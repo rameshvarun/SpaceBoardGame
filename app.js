@@ -8,6 +8,7 @@ var socketio = require('socket.io');
 //Authentication libraries
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 
 //Configuration and API Keys
 var globals = require('./globals');
@@ -28,6 +29,7 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
+//Passport Facebook Strategy
 passport.use(new FacebookStrategy({
     clientID: keys.FACEBOOK_APP_ID,
     clientSecret: keys.FACEBOOK_APP_SECRET,
@@ -45,9 +47,8 @@ passport.use(new FacebookStrategy({
 			{
 				user.findFacebookFriends(function()
 				{
-				});
-				
-				done(null, user);
+					done(null, user);
+				});	
 			});
 		}
 		else
@@ -60,15 +61,19 @@ passport.use(new FacebookStrategy({
 									games : []  }
 									);
 			
-			user.save( function(err, user) {
-				done(null, user);
-			}
-			);
-			
+			user.save( function(err, user)
+			{
+				user.findFacebookFriends(function()
+				{
+					done(null, user);
+				});
+			});			
 		}
 	});
   }
 ));
+
+//TODO: Passport Local Strategy
 
 app.use(express.logger('dev')); //Logging
 app.use(express.bodyParser()); //Parses form data
@@ -98,6 +103,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', require('./routes/index').get);
 app.get('/profile', require('./routes/profile').get);
 app.get('/player', require('./routes/player').get);
+
+app.get('/invite', require('./routes/invite').get);
+app.get('/data', require('./routes/index').data);
 
 //Authentication routes
 app.get('/auth/facebook', passport.authenticate('facebook')); //Let's users login to Facebook
