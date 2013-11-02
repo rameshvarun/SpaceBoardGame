@@ -25,7 +25,7 @@ exports.get = function(req, res){
 					invite.message = req.query.message;
 					
 				invite.save( function(err, user) {
-					res.send("Invite successfully sent.");
+					res.send( { message : "success" } );
 				});
 			}
 			else {
@@ -36,12 +36,12 @@ exports.get = function(req, res){
 			if(req.query.inviteid) {
 				Invite.findById(req.query.inviteid, function(err, invite) {
 					if(invite) {
-						index = invite.indexOf(req.user._id);
+						index = invite.to.indexOf(req.user._id);
 						invite.accepted[index] = true;
 						
 						invite.save( function(err, user) {
 							invite.ready();
-							res.send("Invite accepted.");
+							res.send( { message : "Invite accepted." } );
 						});
 					}
 					else {
@@ -58,7 +58,7 @@ exports.get = function(req, res){
 				Invite.findById(req.query.inviteid, function(err, invite) {
 					if(invite) {
 						invite.remove( function(err) {
-							res.send("Invite declined.");
+							res.send( { message : "Invite declined." } );
 						});
 					}
 					else {

@@ -1,28 +1,131 @@
-<html>
+<html id="app-container" ng-app="app" ng-app>
 
 <head>
-<title>Space Board Game - Dashboard</title>
+<title>{{ user.display_name }}'s Dashboard</title>
+
+<!-- JQuery -->
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<!-- Angular.js -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+<script src="dashboard.js"></script>
+<!-- Bootstrap -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/styles.css">
+<script src="js/bootstrap.min.js"></script>
+<!-- JQuery UI-->
+<script src="http://codeorigin.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
 </head>
 
 <body>
 
-Welcome, {{ user.display_name }}!<br>
-<img src="{{ user.avatar }}" /><br>
+<!-- Wrap all page content here -->
+<div id="wrap">
+	<div class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container">
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
+		  <a class="navbar-brand" href="#">Space Board Game</a>
+		</div>
+		<div class="collapse navbar-collapse">
+		  <ul class="nav navbar-nav">
+			<li class="active"><a href="#">Dashboard</a></li>
+		  </ul>
+		  
+		  <ul class="nav navbar-nav navbar-right">
+			<li><a href="/logout">Logout</a></li>
+		  </ul>
+		</div>
+		
+	  </div>
+	</div>
+	
+	<div class="container">
 
-<a href="/logout">Logout</a><br>
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <p class="lead">Welcome, {{ user.display_name }}!</p>
+      </div>
+	  
+		<h3>Pending Invites</h3>
+		<div class="panel panel-default" ng-repeat="invite in recievedinvites">
+		  <div class="panel-heading">
+			<h3 class="panel-title">Invite From: //invite.from.display_name//</h3>
+		  </div>
+		  <div class="panel-body">
+			<button data-inviteid="//invite._id//" type="button" class="btn btn-success accept-invite"><span class="glyphicon glyphicon-ok"></span> Accept</button>
+			<button data-inviteid="//invite._id//" type="button" class="btn btn-danger reject-invite"><span class="glyphicon glyphicon-remove"></span> Decline</button>
+		  </div>
+		</div>
+		
+		<h3>Sent Invites</h3>
+		<div class="panel panel-default" ng-repeat="invite in sentinvites">
+			<div class="panel-heading">
+				Players: //getProperties(game.players, "display_name").join(',')//
+			</div>
+			<div class="panel-body">
+				Turn: //game.turn//<br>
+				<button type="button" class="btn btn-info"><span class="glyphicon glyphicon-play"></span> Enter Game</button>
+			</div>
+		</div>
+		
+		<button id="newgame" type="button" class="btn btn-info"><span class="glyphicon glyphicon-envelope"></span> Create New Game</button>
+		
+		<h3>Ongoing Games</h3>
+		<h4>Your Turn</h4>
+		
+		<div class="panel panel-default" ng-repeat="game in yourturn">
+			<div class="panel-heading">
+				Players: //getProperties(game.players, "display_name").join(',')//
+			</div>
+			<div class="panel-body">
+				Turn: //game.turn//<br>
+				<a href="/player?id=//game._id//" class="btn btn-info"><span class="glyphicon glyphicon-play"></span> Enter Game</a>
+			</div>
+		</div>
+		
+		<h4>Their Turn</h4>
+		
+		<div class="panel panel-default" ng-repeat="game in theirturn">
+			<div class="panel-heading">
+				Players: //getProperties(game.players, "display_name").join(',')//
+			</div>
+			<div class="panel-body">
+				Turn: //game.turn//<br>
+				<a href="/player?id=//game._id//" class="btn btn-info"><span class="glyphicon glyphicon-play"></span> Enter Game</a>
+			</div>
+		</div>
+	</div>
+</div>
 
-<h2>Invites</h2>
+<div id="footer">
+  <div class="container">
+	<p class="text-muted credit">Pre-Alpha - Version 0.1. Icons from <a href="http://glyphicons.com/">Glyphicons</a></p>
+  </div>
+</div>
 
-<h2>Games</h2>
-<h3>Your Turn:</h3>
-<h3>Not Your Turn:</h3>
-
-<h2>Friends</h2>
-{% for friend in user.friends %}
-<img src="{{ friend.avatar }}" />
-<a href="/profile?id={{ friend.id }}">{{ friend.display_name }}</a>
-{% endfor %}
+<div hidden="true" id="newgame-dialog" title="New Game Invite">
+	<div ng-repeat="friend in friends">
+		<div class="media">
+			<a class="pull-left" href="#">
+				<img class="media-object" src="//friend.avatar//" alt="">
+			</a>
+			<div class="media-body">
+				<h4 class="media-heading">//friend.display_name//</h4>
+				<button class="challenge_friend" data-friendid="//friend._id//" >Challenge To a Game</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 </body>
+
+
 
 </html>

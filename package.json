@@ -14,7 +14,8 @@
 	"passport-local": "*",
 	"socket.io": "*",
 	"mongoose" : "*",
-	"request" : "*"
+	"request" : "*",
+	"redis" : "*"
   },
   "engines": {
 	"node": "0.10.x",

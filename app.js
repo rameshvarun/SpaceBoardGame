@@ -19,6 +19,8 @@ var app = express();
 var User = require('./models/user').User;
 var Game = require('./models/game').Game;
 
+var db = require('./db')
+
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });

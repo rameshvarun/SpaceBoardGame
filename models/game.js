@@ -5,10 +5,10 @@ Schema = db.mongoose.Schema;
 var gameSchema = new Schema({
 	players : [ { type: Schema.Types.ObjectId, ref: 'User' } ],
 	currentPlayer : { type: Number, default: 0 },
+	turn : { type: Number, default: 0 },
 	chat : [String],
 	ended : { type: Boolean, default: false },
 	board : Schema.Types.Mixed
-	
 });
 
 function countNeighbors(board, x, y, term) {

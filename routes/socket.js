@@ -1,3 +1,5 @@
+var db = require('./../db');
+
 exports.connect = function(socket)
 {
 	console.log('A socket has connected.');
@@ -5,6 +7,9 @@ exports.connect = function(socket)
 	var game;
 	
 	var room;
+	
+	socket.on('getuserinfo', function(data){
+	});
 	
 	socket.on('setgame', function(data){
 		room = data.gameid;

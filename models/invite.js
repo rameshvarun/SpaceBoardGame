@@ -35,8 +35,7 @@ inviteSchema.methods.ready = function () {
 	player_list.sort( function() { return Math.random() - 0.5 } );
 	
 	var game = new Game( { players : player_list} );
-	game.save( function(err, game)
-	{
+	game.save( function(err, game) {
 		//Remove the index object
 		me.remove();
 	} );
