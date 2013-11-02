@@ -6,7 +6,8 @@ var gameSchema = new Schema({
 	players : [ { type: Schema.Types.ObjectId, ref: 'User' } ],
 	currentPlayer : { type: Number, default: 0 },
 	turn : { type: Number, default: 0 },
-	chat : [String],
+	phase : { type: Number, default: 0 },
+	chat : Schema.Types.Mixed,
 	ended : { type: Boolean, default: false },
 	board : Schema.Types.Mixed
 });
@@ -76,6 +77,10 @@ gameSchema.methods.generateBoard = function ( callback ) {
 			}
 		}
 	}
+	
+	//Clear chat history to empty array
+	me.chat = [];
+	me.markModified('chat');
 		
 	me.markModified('board');
 	me.save( function(err) {
