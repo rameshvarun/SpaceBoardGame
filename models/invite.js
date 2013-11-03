@@ -36,6 +36,9 @@ inviteSchema.methods.ready = function () {
 	
 	var game = new Game( { players : player_list} );
 	game.save( function(err, game) {
+		//Generate board
+		game.generateBoard();
+		
 		//Remove the index object
 		me.remove();
 	} );

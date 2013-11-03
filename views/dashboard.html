@@ -66,12 +66,9 @@
 		
 		<h3>Sent Invites</h3>
 		<div class="panel panel-default" ng-repeat="invite in sentinvites">
-			<div class="panel-heading">
-				Players: //getProperties(game.players, "display_name").join(',')//
-			</div>
 			<div class="panel-body">
-				Turn: //game.turn//<br>
-				<button type="button" class="btn btn-info"><span class="glyphicon glyphicon-play"></span> Enter Game</button>
+				To: //getProperties(invite.to, "display_name").join(',')//
+				<button data-inviteid="//invite._id//" type="button" class="btn btn-danger reject-invite"><span class="glyphicon glyphicon-remove"></span> Decline</button>
 			</div>
 		</div>
 		
