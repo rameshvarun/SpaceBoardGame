@@ -3,8 +3,8 @@ var mongoose = require('mongoose');
 var crypto = require('crypto');
 
 var dburi = process.env.MONGOLAB_URI ||
-				process.env.MONGOHQ_URL || 
-				'mongodb://localhost/spacegame';
+			process.env.MONGOHQ_URL || 
+			'mongodb://localhost/spacegame';
 
 mongoose.connect(dburi);
 

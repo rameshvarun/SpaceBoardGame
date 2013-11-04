@@ -1,6 +1,8 @@
 {
 	"salary" : 50,
 	
+	"resource_salary" : 50,
+	
 	"fighter" : {
 		"name" : "fighter",
 		"HP" : 5,

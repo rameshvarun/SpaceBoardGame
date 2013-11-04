@@ -12,6 +12,8 @@ var gameSchema = new Schema({
 	board : Schema.Types.Mixed
 });
 
+var balance = require('./../public/balance');
+
 function countNeighbors(board, x, y, term) {
 	var count = 0;
 	
@@ -30,10 +32,75 @@ function countNeighbors(board, x, y, term) {
 	return count;
 }
 
-gameSchema.methods.evaluatePlanets = function () {
+function getMaxOfArray(numArray) {
+	return Math.max.apply(null, numArray);
 }
 
-gameSchema.methods.collectIncome = function () {
+function count(array, value) {
+	var n = 0;
+	for(var i = 0; i < array.length; ++i) {
+		if(array[i] == value)
+			++n;
+	}
+	
+	return n;
+}
+
+gameSchema.methods.evaluatePlanets = function (callback) {
+	var me = this;
+	
+	me.board.planets.forEach(function(planet, index) {
+		var counts = [];
+		for(var i = 0; i < me.players.length; ++i) {
+			counts.push(0);
+		}
+		
+		for(var i = 0; i < me.board.ships.length; ++i) {
+			var ship = me.board.ships[i];
+			if( Math.abs(ship.x - planet.x) < 2 && Math.abs(ship.y - planet.y) < 2 ) {
+				counts[ship.side] = counts[ship.side] + 1;
+			}
+		}
+		
+		var largest = getMaxOfArray(counts);
+		if(largest > 0 && count(counts, largest) == 1) {
+			planet.side = counts.indexOf(largest);
+		}
+	});
+	
+	me.markModified('board');
+	me.save( function(err) {
+		callback();
+	});
+}
+
+gameSchema.methods.collectIncome = function (userindex, callback) {
+	var me = this;
+	
+	var resource_count = 0;
+	
+	//Evaluate resource stations
+	me.board.resource_stations.forEach(function(station, index) {
+		for(var i = 0; i < me.board.ships.length; ++i) {
+			var ship = me.board.ships[i];
+			if(station.x == ship.x && station.y == ship.y) {
+				station.side = ship.side;
+				break;
+			}
+		}
+		
+		if(station.side == userindex) {
+			resource_count++;
+		}
+	});
+	
+	me.board.banks[userindex] += balance.salary;
+	me.board.banks[userindex] += resource_count*balance.resource_salary;
+	
+	me.markModified('board');
+	me.save( function(err) {
+		callback();
+	});
 }
 
 gameSchema.methods.generateBoard = function ( callback ) {

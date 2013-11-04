@@ -23,14 +23,20 @@
 	
 	"planets" : [
 		{ "x" : 2, "y" : 2, "side" : 0},
-		{ "x" : 16, "y" : 16, "side" : 1}
+		{ "x" : 16, "y" : 16, "side" : 1},
+		{ "x" : 14, "y" : 4, "side" : null},
+		{ "x" : 4, "y" : 14, "side" : null}
 	],
 		
 	"resource_stations" : [
 		{ "x" : 9, "y" : 16, "side" : null },
 		{ "x" : 9, "y" : 2, "side" : null },
 		{ "x" : 16, "y" : 9, "side" : null },
-		{ "x" : 2, "y" : 9, "side" : null }
+		{ "x" : 2, "y" : 9, "side" : null },
+		{ "x" : 11, "y" : 7, "side" : null},
+		{ "x" : 7, "y" : 11, "side" : null},
+		{ "x" : 17, "y" : 1, "side" : null},
+		{ "x" : 1, "y" : 17, "side" : null}
 	],
 	
 	"ships" : [

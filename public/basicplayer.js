@@ -8,12 +8,66 @@ var player_colors = ["#27ADE3", "#B0D136", "#EE368A"];
 var me = null;
 var game = null;
 var me_num = 0;
+
+//Colors planets, resource stations, and ships according to their side
+function color_divs() {
+	$(".planet").each(function(index) {
+		var planet = game.board.planets[ $( this ).attr("data-index") ];
+		if(planet.side == null)
+			$( this ).css("color", "black");
+		else
+			$( this ).css("color", player_colors[ planet.side ]);
+	});
+	
+	$(".station").each(function(index) {
+		var station = game.board.resource_stations[ $( this ).attr("data-index") ];
+		if(station.side == null)
+			$( this ).css("color", "black");
+		else
+			$( this ).css("color", player_colors[ station.side ]);
+	});
+	
+	$(".ship").each(function(index) {
+		var ship = game.board.ships[ $( this ).attr("data-index") ];
+		if(ship.side == null)
+			$( this ).css("color", "black");
+		else
+			$( this ).css("color", player_colors[ ship.side ]);
+	});
+}
+
 socket.on('userinfo', function (data) {
 	me = data;
 	
 	//After recieving user information, set the current game id
 	socket.emit('setgame', { gameid :  GAMEID }); 
 });
+
+socket.on('updatestations', function (data) {
+	game.board.resource_stations = data;
+	color_divs();
+});
+
+socket.on('updateplanets', function (data) {
+	game.board.planets = data;
+	color_divs();
+});
+
+socket.on('updatebanks', function (data) {
+	game.board.banks = data;
+	update_banks();
+});
+
+function update_banks() {
+	var $div = $('#banks');
+	$div.html("");
+	
+	for(var i = 0; i < game.board.banks.length; ++i) {
+		var name = (me_num == i) ? "Me" : game.players[i].display_name;
+		$div.append(name + ": " + game.board.banks[i]);
+		$div.append('<br>');
+	}
+}
 
 socket.on('moveship', function (data) {
 	me = data;
@@ -42,56 +96,44 @@ $.getJSON("/balance.json", function(data) {
 });
 
 function getMoveSquares(startx, starty, range) {
-	squares = [];
-	function squareTested(xval, yval) {
-		for(var n = 0; n < squares.length; ++n) {
-			if( squares[n][0] == xval && squares[n][1] == yval) {
-				return true;
-			}
-		}
-		return false;
-	}
+	var squares = [];
 	
 	function recursiveMove(x, y, order) {
-		if(order <= 0)
-			return;
-		
-		if(x < 0 || y < 0)
+		if(order < 0)
 			return;
 			
+		if(x < 0 || y < 0)
+			return;
 		if(x >= game.board.terrain[0].length || y >= game.board.terrain.length)
 			return;
 			
 		for(var i = 0; i < game.board.planets.length; ++i) {
-			if(x == game.board.planets[i].x && y == game.board.planets[i].y) {
+			if(x == game.board.planets[i].x && y == game.board.planets[i].y)
 				return;
-			}
-		}
-		for(var i = 0; i < game.board.ships.length; ++i) {
-			if(x == game.board.ships[i].x && y == game.board.ships[i].y) {
-				return;
-			}
 		}
 		
-		if( !squareTested(x, y) )
-			squares.push([x,y]);
-			
-		for(var i = -1; i <= 1; ++i) {
-			for(var j = -1; j <= 1; ++j) {
-				if( !(i == 0 && j == 0) ) {
-					recursiveMove(x + i, y + j, order - 1);
-				}
-			}
+		for(var i = 0; i < game.board.ships.length; ++i) {
+			if(x == game.board.ships[i].x && y == game.board.ships[i].y)
+				return;
 		}
+		
+		var inSquares = false;
+		for(var i = 0; i < squares.length; ++i) {
+			if(x == squares[i][0] && y == squares[i][1])
+				inSquares = true;
+		}
+		
+		if(!inSquares)
+			squares.push([x, y]);
+		
+		for(var i = -1; i <= 1; ++i)
+			for(var j = -1; j <= 1; ++j)
+				recursiveMove(x + i, y + j, order - 1);
 	}
 	
-	for(var i = startx - 1; i <= startx + 1; ++i) {
-		for(var j = starty - 1; j <= starty + 1; ++j) {
-			if( !(i == startx && j == starty) ) {
-				recursiveMove(i, j, range);
-			}
-		}
-	}
+	for(var i = -1; i <= 1; ++i)
+			for(var j = -1; j <= 1; ++j)
+				recursiveMove(startx + i, starty + j, range - 1);
 	
 	return squares;
 }
@@ -181,74 +223,33 @@ socket.on('game', function (data) {
 		$div.height( gridSize );
 	});
 	
-	//Colors planets, resource stations, and ships according to their side
-	function color_divs() {
-		$(".planet").each(function(index) {
-			var planet = game.board.planets[ $( this ).attr("data-index") ];
-			if(planet.side == null)
-				$( this ).css("color", "black");
-			else
-				$( this ).css("color", player_colors[ planet.side ]);
-		});
-		
-		$(".station").each(function(index) {
-			var station = game.board.resource_stations[ $( this ).attr("data-index") ];
-			if(station.side == null)
-				$( this ).css("color", "black");
-			else
-				$( this ).css("color", player_colors[ station.side ]);
-		});
-		
-		$(".ship").each(function(index) {
-			var ship = game.board.ships[ $( this ).attr("data-index") ];
-			if(ship.side == null)
-				$( this ).css("color", "black");
-			else
-				$( this ).css("color", player_colors[ ship.side ]);
-		});
-	}
-	
 	function move_ship() {
 		$('.move_selector').remove();
-		var ship_index = $( this ).attr("data-ship_index");
-		var ship = game.board.ships[ship_index];
-		ship.hasmoved = true;
 		
-		ship.x = $( this ).attr("data-x");
-		ship.y = $( this ).attr("data-y");
-		
-		var $ship = null;
-		$(".ship").each(function(index) {
-			if($( this ).attr('data-index') == ship_index) {
-				$ship = $( this );
-			}
-		});
-
-		$ship.animate( {left : (ship.x)*gridSize,
-						top : (ship.y)*gridSize}, 1000 );
-						
-		socket.emit("moveship", { index : ship_index, x : ship.x, y : ship.y});
+		socket.emit("moveship", { index : $( this ).attr("data-ship_index"),
+									x : $( this ).attr("data-x"), y : $( this ).attr("data-y")});
 	}
 	
 	function evaulate_phase() {
+		//Clear any excess movement selectors that might still exist
+		$('.move_selector').remove();
+		
 		var $div = $('#turn');
 		if(me_num == game.currentPlayer) {
 			$div.html("<h2>My Turn</h2>");
 			if(game.phase == 1) {
-				$end_movement = $div.append("<input type='button' value='End Movement/Combat Phase'/>");
-				$end_movement.click(function() {
-					game.phase = 2;
+				$div.append("<input id='endmovement' type='button' value='End Movement/Combat Phase'/>");
+				$('#endmovement').click(function() {
 					socket.emit("endmovement", {});
-					evaulate_phase();
 				});
 				$('.ship').each(function(index) {
 					var ship = game.board.ships[ $( this ).attr("data-index") ];
 					var ship_index = $( this ).attr("data-index");
 					
 					$( this ).click(function() {
-						if(!ship.hasmoved && ship.side == me_num) {
+						if(!ship.hasmoved && ship.side == me_num && game.currentPlayer == me_num) {
 							$('.move_selector').remove();
-							var squares = getMoveSquares(ship.x, ship.y, balance[ship.type].Move);
+							var squares = getMoveSquares(Number(ship.x), Number(ship.y), Number(balance[ship.type].Move));
 							$.each(squares, function(index, square){
 								var $div = $('<div class="move_selector"></div>');
 								$( "#board" ).append( $div );
@@ -267,9 +268,7 @@ socket.on('game', function (data) {
 			}
 			if(game.phase == 2) {
 				if(game.board.queue[me_num].length == 0) { //Deploy queue is empty
-					game.phase = 3;
 					socket.emit("enddeploy", {});
-					evaulate_phase();
 				}
 				else {
 				}
@@ -277,7 +276,6 @@ socket.on('game', function (data) {
 			if(game.phase == 3) {
 				//Skip store
 				socket.emit("endbuy", {});
-				endturn();
 			}
 		}
 		else {
@@ -287,6 +285,7 @@ socket.on('game', function (data) {
 	
 	color_divs();
 	evaulate_phase();
+	update_banks();
 	
 	socket.on('endmovement', function (data) {
 		game.phase = 2;

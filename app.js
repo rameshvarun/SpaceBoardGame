@@ -12,7 +12,6 @@ var LocalStrategy = require('passport-local').Strategy;
 
 //Configuration and API Keys
 var globals = require('./globals');
-var keys = require('./keys.json');
 
 var app = express();
 
@@ -33,8 +32,8 @@ passport.deserializeUser(function(id, done) {
 
 //Passport Facebook Strategy
 passport.use(new FacebookStrategy({
-    clientID: keys.FACEBOOK_APP_ID,
-    clientSecret: keys.FACEBOOK_APP_SECRET,
+    clientID: globals.FACEBOOK_APP_ID,
+    clientSecret: globals.FACEBOOK_APP_SECRET,
     callbackURL: globals.APP_URL + "/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
@@ -83,7 +82,7 @@ app.use(express.favicon()); //Favicon
 
 //Needed for user sessions
 app.use(express.cookieParser()); //Parsing cookies
-app.use(express.session({ secret: keys.SESSION_TOKEN }));
+app.use(express.session({ secret: globals.SESSION_TOKEN }));
 
 //Passport middleware
 app.use(passport.initialize());
