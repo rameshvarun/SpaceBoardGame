@@ -14,8 +14,7 @@ var userSchema = new Schema({
 	password : String,
 	date_registered : { type: Date, default: Date.now },
 	date_last_login : { type: Date, default: Date.now },
-	friends : [ { type: Schema.Types.ObjectId, ref: 'User' } ],
-	games : [ { type: Schema.Types.ObjectId, ref: 'Game' } ]
+	friends : [ { type: Schema.Types.ObjectId, ref: 'User' } ]
 });
 
 

@@ -58,9 +58,7 @@ passport.use(new FacebookStrategy({
 			var user = new User( { facebook_id : profile.id,
 									facebook_access_token : accessToken,
 									display_name : profile.displayName,
-									friends : [],
-									games : []  }
-									);
+									friends : [] } );
 			
 			user.save( function(err, user)
 			{
