@@ -75,7 +75,8 @@ gameSchema.methods.evaluatePlanets = function (callback) {
 }
 
 gameSchema.methods.evaluateCombat = function (callback) {
-	
+	var me = this;
+
 	me.markModified('board');
 	me.save( function(err) {
 		callback();
