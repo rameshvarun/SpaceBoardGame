@@ -161,9 +161,7 @@ exports.connect = function(socket)
 				game.board.ships[i].hasmoved = false;
 			}
 			
-			game.markModified('board');
-			
-			game.save(function (err) {
+			game.applyRepairs(function () {
 				socket.emit('endbuy', data);
 				socket.broadcast.to( room ).emit('endbuy', data); //Send it to clients
 			});

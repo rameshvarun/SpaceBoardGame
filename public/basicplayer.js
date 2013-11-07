@@ -246,9 +246,14 @@ function getMoveSquares(startx, starty, range) {
 				return;
 		}
 		
+		var attackable = false;
 		for(var i = 0; i < game.board.ships.length; ++i) {
-			if(x == game.board.ships[i].x && y == game.board.ships[i].y)
-				return;
+			if(x == game.board.ships[i].x && y == game.board.ships[i].y) {
+				if(game.board.ships[i].side == me_num)
+					return;
+				else
+					attackable = true;
+			}
 		}
 
 		if(game.board.terrain[y][x] == 1) {
@@ -264,9 +269,10 @@ function getMoveSquares(startx, starty, range) {
 		if(!inSquares)
 			squares.push([x, y]);
 		
-		for(var i = -1; i <= 1; ++i)
-			for(var j = -1; j <= 1; ++j)
-				recursiveMove(x + i, y + j, order - 1);
+		if(!attackable)
+			for(var i = -1; i <= 1; ++i)
+				for(var j = -1; j <= 1; ++j)
+					recursiveMove(x + i, y + j, order - 1);
 	}
 	
 	for(var i = -1; i <= 1; ++i)
