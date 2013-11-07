@@ -13,7 +13,26 @@
 		"EAMin" : 3,
 		"EAMax" : 6,
 		"TAMin" : 0,
-		"TAMax" : 0
+		"TAMax" : 0,
+		"Range" : 6,
+		"Repair" : 0,
+		"Cost" : 35
+	},
+
+	"bomber" : {
+		"name" : "bomber",
+		"HP" : 10,
+		"SP" : 35,
+		"MPMin" : 4,
+		"MPMax" : 6,
+		"Move" : 3,
+		"EAMin" : 8,
+		"EAMax" : 12,
+		"TAMin" : 8,
+		"TAMax" : 12,
+		"Range" : 6,
+		"Repair" : 0,
+		"Cost" : 100
 	},
 	
 	"frigate" : {
@@ -26,6 +45,7 @@
 		"EAMin" : 8,
 		"EAMax" : 12,
 		"TAMin" : 5,
-		"TAMax" : 6
+		"TAMax" : 6,
+		"Cost" : 100
 	}
 }

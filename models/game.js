@@ -74,6 +74,15 @@ gameSchema.methods.evaluatePlanets = function (callback) {
 	});
 }
 
+gameSchema.methods.evaluateCombat = function (callback) {
+	
+	me.markModified('board');
+	me.save( function(err) {
+		callback();
+	});
+}
+
+//Evaluates resource stations and 
 gameSchema.methods.collectIncome = function (userindex, callback) {
 	var me = this;
 	
