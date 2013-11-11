@@ -220,7 +220,7 @@ function add_ships() {
 		$div.attr("data-index", index);
 		
 		$( "#board" ).append( $div );
-		$div.html( ship.type[0].toUpperCase() + ship.type[1] );
+		$div.html( balance[ship.type].abbreviation );
 		
 		$div.css( "left", ship.x*gridSize);
 		$div.css( "top", ship.y*gridSize);

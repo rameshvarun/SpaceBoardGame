@@ -2,9 +2,12 @@
 	"salary" : 50,
 	
 	"resource_salary" : 50,
+
+	"sun_effects" : 5,
 	
 	"fighter" : {
 		"name" : "fighter",
+		"abbreviation" : "Fi",
 		"HP" : 5,
 		"SP" : 25,
 		"MPMin" : 5,
@@ -21,6 +24,7 @@
 
 	"bomber" : {
 		"name" : "bomber",
+		"abbreviation" : "Bo",
 		"HP" : 10,
 		"SP" : 35,
 		"MPMin" : 4,
@@ -37,6 +41,7 @@
 	
 	"frigate" : {
 		"name" : "frigate",
+		"abbreviation" : "Fr",
 		"HP" : 30,
 		"SP" : 35,
 		"MPMin" : 2,
@@ -49,5 +54,39 @@
 		"Range" : 12,
 		"Repair" : 5,
 		"Cost" : 100
+	},
+
+	"destroyer" : {
+		"name" : "destroyer",
+		"abbreviation" : "D",
+		"HP" : 55,
+		"SP" : 55,
+		"MPMin" : 1,
+		"MPMax" : 3,
+		"Move" : 3,
+		"EAMin" : 15,
+		"EAMax" : 20,
+		"TAMin" : 8,
+		"TAMax" : 12,
+		"Range" : 24,
+		"Repair" : 10,
+		"Cost" : 180
+	},
+
+	"cruiser" : {
+		"name" : "cruiser",
+		"abbreviation" : "Cr",
+		"HP" : 75,
+		"SP" : 75,
+		"MPMin" : 0,
+		"MPMax" : 2,
+		"Move" : 1,
+		"EAMin" : 20,
+		"EAMax" : 30,
+		"TAMin" : 14,
+		"TAMax" : 18,
+		"Range" : null,
+		"Repair" : 15,
+		"Cost" : 250
 	}
 }
