@@ -88,5 +88,73 @@
 		"Range" : null,
 		"Repair" : 15,
 		"Cost" : 250
+	},
+
+	"supportcruiser" : {
+		"name" : "supportcruiser",
+		"abbreviation" : "SC",
+		"HP" : 75,
+		"SP" : 75,
+		"MPMin" : 0,
+		"MPMax" : 2,
+		"Move" : 1,
+		"EAMin" : 5,
+		"EAMax" : 10,
+		"TAMin" : 0,
+		"TAMax" : 0,
+		"Range" : null,
+		"Repair" : 15,
+		"Cost" : 300
+	},
+
+	"missilecruiser" : {
+		"name" : "missilecruiser",
+		"abbreviation" : "MC",
+		"HP" : 125,
+		"SP" : 45,
+		"MPMin" : 0,
+		"MPMax" : 2,
+		"Move" : 1,
+		"EAMin" : 4,
+		"EAMax" : 12,
+		"TAMin" : 18,
+		"TAMax" : 25,
+		"Range" : null,
+		"Repair" : 15,
+		"Cost" : 300
+	},
+
+	"battleship" : {
+		"name" : "battleship",
+		"abbreviation" : "Ba",
+		"HP" : 120,
+		"SP" : 120,
+		"MPMin" : 0,
+		"MPMax" : 0,
+		"Move" : 1,
+		"EAMin" : 35,
+		"EAMax" : 55,
+		"TAMin" : 20,
+		"TAMax" : 30,
+		"Range" : null,
+		"Repair" : 20,
+		"Cost" : 450
+	},
+
+	"carrier" : {
+		"name" : "carrier",
+		"abbreviation" : "Ca",
+		"HP" : 100,
+		"SP" : 100,
+		"MPMin" : 0,
+		"MPMax" : 0,
+		"Move" : 1,
+		"EAMin" : 5,
+		"EAMax" : 10,
+		"TAMin" : 20,
+		"TAMax" : 30,
+		"Range" : null,
+		"Repair" : 20,
+		"Cost" : 450
 	}
 }
