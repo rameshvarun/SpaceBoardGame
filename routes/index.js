@@ -6,8 +6,7 @@ var async = require('async');
 //Index page
 exports.get = function(req, res){
 	if(req.user) {
-		req.user.populate('friends').populate('games').populate(function (err, user)
-		{
+		req.user.populate('friends').populate('games').populate(function (err, user) {
 			res.render( 'dashboard.html', { user : user });
 		});
 	}

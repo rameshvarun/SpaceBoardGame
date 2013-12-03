@@ -8,7 +8,18 @@ var crypto = require('crypto');
 var db = require('./../db');
 
 //Player page
-exports.get = function(req, res){
+exports.webglget = function(req, res){
+	if(!req.session.user_token) {
+		req.session.user_token = crypto.randomBytes(48).toString('hex');
+		db.redis.set(req.session.user_token, req.user.id);
+	}
+	
+	res.render( 'player.html', { APP_URL : globals.APP_URL,
+								GAMEID : req.query.id,
+								USERTOKEN : req.session.user_token});
+};
+
+exports.basicget = function(req, res){
 	if(!req.session.user_token) {
 		req.session.user_token = crypto.randomBytes(48).toString('hex');
 		db.redis.set(req.session.user_token, req.user.id);
@@ -16,5 +27,5 @@ exports.get = function(req, res){
 	
 	res.render( 'basicplayer.html', { APP_URL : globals.APP_URL,
 								GAMEID : req.query.id,
-								USERTOKEN : req.session.user_token})
+								USERTOKEN : req.session.user_token});
 };

@@ -7,72 +7,12 @@ var socketio = require('socket.io');
 
 //Authentication libraries
 var passport = require('passport');
-var FacebookStrategy = require('passport-facebook').Strategy;
-var LocalStrategy = require('passport-local').Strategy;
+var auth = require('./auth');
 
 //Configuration and API Keys
 var globals = require('./globals');
 
 var app = express();
-
-var User = require('./models/user').User;
-var Game = require('./models/game').Game;
-
-var db = require('./db')
-
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
-});
-
-//Passport Facebook Strategy
-passport.use(new FacebookStrategy({
-    clientID: globals.FACEBOOK_APP_ID,
-    clientSecret: globals.FACEBOOK_APP_SECRET,
-    callbackURL: globals.APP_URL + "/auth/facebook/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
-    User.findOne( { facebook_id : profile.id }, function(err, user)
-	{
-		if(user)
-		{
-			console.log("Existing Facebook user. Refreshed access token.");
-			user.facebook_access_token = accessToken;
-			
-			user.save(function(err, user)
-			{
-				user.findFacebookFriends(function()
-				{
-					done(null, user);
-				});	
-			});
-		}
-		else
-		{
-			console.log("New Facebook user - database entry created.");
-			var user = new User( { facebook_id : profile.id,
-									facebook_access_token : accessToken,
-									display_name : profile.displayName,
-									friends : [] } );
-			
-			user.save( function(err, user)
-			{
-				user.findFacebookFriends(function()
-				{
-					done(null, user);
-				});
-			});			
-		}
-	});
-  }
-));
-
-//TODO: Passport Local Strategy
 
 app.use(express.logger('dev')); //Logging
 app.use(express.bodyParser()); //Parses form data
@@ -101,7 +41,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 //All the application routes
 app.get('/', require('./routes/index').get);
 app.get('/profile', require('./routes/profile').get);
-app.get('/player', require('./routes/player').get);
+
+app.get('/player', require('./routes/player').basicget);
+app.get('/webglplayer', require('./routes/player').webglget);
 
 app.get('/invite', require('./routes/invite').get);
 app.get('/data', require('./routes/index').data);
@@ -120,6 +62,6 @@ server.listen( globals.PORT, function(){
   console.log('Express server listening on port ' + globals.PORT);
 });
 
+//Start websockets server
 var io = socketio.listen(server);
-
 io.sockets.on('connection', require('./routes/socket').connect )

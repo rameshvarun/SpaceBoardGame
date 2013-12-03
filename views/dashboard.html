@@ -1,6 +1,8 @@
 <html id="app-container" ng-app="app" ng-app>
 
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>{{ user.display_name }}'s Dashboard</title>
 
 <!-- JQuery -->
@@ -68,7 +70,7 @@
 		<div class="panel panel-default" ng-repeat="invite in sentinvites">
 			<div class="panel-body">
 				To: //getProperties(invite.to, "display_name").join(',')//
-				<button data-inviteid="//invite._id//" type="button" class="btn btn-danger reject-invite"><span class="glyphicon glyphicon-remove"></span> Decline</button>
+				<button data-inviteid="//invite._id//" type="button" class="btn btn-danger reject-invite"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
 			</div>
 		</div>
 		
