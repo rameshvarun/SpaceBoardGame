@@ -7,19 +7,19 @@ The Sixth Sun is a board game set in space, which can be played both asynchronou
 ## Screenshots
 
 ### WebGL Player
-![WebGL Player](http://www.varunramesh.net/images/screenshots/webglplayer.png)
+![WebGL Player](./screenshots/webglplayer.png)
 Preliminary WebGL player, created using Three.js and Socket.IO. Partially playable.
 
 ### Dashboard
-![Dashboard](http://i.imgur.com/HkPzmW3.png)
+![Dashboard](./screenshots/dashboard.png)
 
 ### Android App
-![Android Client](http://www.varunramesh.net/images/screenshots/androidclient.png)
+![Android Client](./screenshots/androidclient.png)
 
 A basic test, created with Unity, where the client is authenticated and downloads the level layout. Not playable.
 
 ### Original Prototype
-![Original](http://www.varunramesh.net/images/screenshots/htmlplayer.png)
+![Original](./screenshots/htmlplayer.png)
 
 The original prototype, created using pure DOM and Socket.IO. Can play full games to completion.
 
